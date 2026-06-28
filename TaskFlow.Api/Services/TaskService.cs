@@ -25,7 +25,6 @@ namespace TaskFlow.Api.Services
             var taskItem = new TaskItem(name, description);
             _repository.Add(taskItem);
 
-            // ten task item ma już id?
             return taskItem;
         }
 

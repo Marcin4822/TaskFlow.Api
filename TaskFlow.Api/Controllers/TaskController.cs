@@ -54,7 +54,7 @@ namespace TaskFlow.Api.Controllers
         {
             var task = _taskService.CreateTask(
                 request.Name, 
-                request.Description
+                request.Description ?? string.Empty
              );
 
             var response = new TaskResponse(
