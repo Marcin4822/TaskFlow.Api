@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TaskFlow.Api.Contracts.Requests;
-using TaskFlow.Api.Models;
+using TaskFlow.Api.Contracts.Responses;
 using TaskFlow.Api.Services;
 
 namespace TaskFlow.Api.Controllers
@@ -18,24 +18,58 @@ namespace TaskFlow.Api.Controllers
 
 
         [HttpGet]
-        public List<TaskItem> GetTasks()
+        public ActionResult<IEnumerable<TaskResponse>> GetTasks()
         {
-            return _taskService.GetTasks();
+            var tasks = _taskService.GetTasks();
+
+            var response = tasks.Select(task => new TaskResponse(
+                task.Id,
+                task.Name,
+                task.Description,
+                task.Effort,
+                task.State
+                ));
+
+            return Ok(response);
+
         }
 
         [HttpGet("{id:int}")]
-        public TaskItem? GetTask(int id)
+        public ActionResult<TaskResponse> GetTask(int id)
         {
-            return _taskService.GetTask(id);
+            var task = _taskService.GetTask(id);
+
+            if (task == null)
+            {
+                return NotFound();
+            }
+
+            var response = new TaskResponse(task.Id, task.Name, task.Description, task.Effort, task.State);
+
+            return Ok(response);
         }
 
         [HttpPost]
-        public void CreateTask(CreateTaskRequest request)
+        public ActionResult<TaskResponse> CreateTask(CreateTaskRequest request)
         {
-            _taskService.CreateTask(
+            var task = _taskService.CreateTask(
                 request.Name, 
                 request.Description
              );
+
+            var response = new TaskResponse(
+                task.Id, 
+                task.Name, 
+                task.Description, 
+                task.Effort, 
+                task.State
+             );
+
+            return CreatedAtAction(
+                nameof(GetTask),
+                new { id = response.Id },
+                response
+            );
         }
 
 
