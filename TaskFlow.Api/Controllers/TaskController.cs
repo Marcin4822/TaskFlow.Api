@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using TaskFlow.Api.Contracts.Requests;
 using TaskFlow.Api.Contracts.Responses;
 using TaskFlow.Api.Services;
@@ -15,7 +16,6 @@ namespace TaskFlow.Api.Controllers
         {
             _taskService = taskService;
         }
-
 
         [HttpGet]
         public ActionResult<IEnumerable<TaskResponse>> GetTasks()
@@ -54,7 +54,7 @@ namespace TaskFlow.Api.Controllers
         {
             var task = _taskService.CreateTask(
                 request.Name, 
-                request.Description ?? string.Empty
+                request.Description
              );
 
             var response = new TaskResponse(
@@ -70,6 +70,19 @@ namespace TaskFlow.Api.Controllers
                 new { id = response.Id },
                 response
             );
+        }
+
+        [HttpPut("{id:int}")]
+        public ActionResult UpdateTask([Range(1, int.MaxValue)] int id, UpdateTaskRequest request)
+        {
+            var result = _taskService.UpdateTask(id, request.Name, request.Description, request.Effort, request.State);
+
+            if (!result)
+            {
+                return NotFound(); // 404
+            }
+
+            return NoContent(); // 204
         }
 
 
