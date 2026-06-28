@@ -72,6 +72,19 @@ namespace TaskFlow.Api.Controllers
             );
         }
 
+        [HttpPatch("{id:int}")]
+        public ActionResult UpdateTaskPartially(int id, PatchTaskRequest request)
+        {
+            var result = _taskService.UpdateTaskPartially(id, request.Name, request.Description, request.Effort, request.State);
+
+            if (!result)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+
         [HttpPut("{id:int}")]
         public ActionResult UpdateTask([Range(1, int.MaxValue)] int id, UpdateTaskRequest request)
         {

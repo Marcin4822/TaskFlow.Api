@@ -39,9 +39,9 @@ namespace TaskFlow.Api.Services
 
             // TODO: Improve PATCH handling to distinguish between omitted properties and explicit null values.
             task.Update(
-                name ?? task.Name, 
+                name ?? task.Name,
                 description ?? task.Description,
-                effort ?? task.Effort, 
+                effort ?? task.Effort,
                 state ?? task.State);
 
             return true;
