@@ -20,10 +20,13 @@ namespace TaskFlow.Api.Services
             return _repository.GetById(id);
         }
 
-        public void CreateTask(string name, string description)
+        public TaskItem CreateTask(string name, string description)
         {
             var taskItem = new TaskItem(name, description);
             _repository.Add(taskItem);
+
+            // ten task item ma już id?
+            return taskItem;
         }
 
         //public void UpdateTask(int id, string name, string description, short effort, TaskState state)
