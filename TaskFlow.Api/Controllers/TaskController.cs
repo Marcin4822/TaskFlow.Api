@@ -85,6 +85,14 @@ namespace TaskFlow.Api.Controllers
             return NoContent(); // 204
         }
 
+        [HttpPost("{id:int}")]
+        public ActionResult DeleteTask(int id)
+        {
+            var result = _taskService.DeleteTask(id);
+
+            return result ? NoContent() : NotFound();
+        }
+
 
     }
 }

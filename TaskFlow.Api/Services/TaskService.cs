@@ -20,7 +20,7 @@ namespace TaskFlow.Api.Services
             return _repository.GetById(id);
         }
 
-        public TaskItem CreateTask(string name, string description)
+        public TaskItem CreateTask(string name, string? description)
         {
             var taskItem = new TaskItem(name, description);
             _repository.Add(taskItem);
@@ -28,9 +28,52 @@ namespace TaskFlow.Api.Services
             return taskItem;
         }
 
-        //public void UpdateTask(int id, string name, string description, short effort, TaskState state)
-        //{
-        //}
+        public bool UpdateTaskPartially(int id, string? name, string? description, short? effort, TaskState? state)
+        {
+            var task = _repository.GetById(id);
+
+            if (task == null)
+            {
+                return false;
+            }
+
+            // TODO: Improve PATCH handling to distinguish between omitted properties and explicit null values.
+            task.Update(
+                name ?? task.Name, 
+                description ?? task.Description,
+                effort ?? task.Effort, 
+                state ?? task.State);
+
+            return true;
+        }
+
+        public bool UpdateTask(int id, string name, string? description, short? effort, TaskState state)
+        {
+            var task = _repository.GetById(id);
+
+            if (task == null)
+            {
+                return false;
+            }
+
+            task.Update(name, description, effort, state);
+
+            return true;
+        }
+
+        public bool DeleteTask(int id)
+        {
+            var task = _repository.GetById(id);
+
+            if (task == null)
+            {
+                return false;
+            }
+
+            _repository.Delete(task);
+
+            return true;
+        }
        
     }
 }

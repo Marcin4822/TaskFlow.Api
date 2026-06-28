@@ -17,24 +17,15 @@ namespace TaskFlow.Api.Services
             return _tasks.Find((task) => task.Id == id);
         }
 
-        public void Add(TaskItem taskItem)
+        public void Add(TaskItem task)
         {
-            _tasks.Add(taskItem);
+            _tasks.Add(task);
         }
 
-        public void Update(TaskItem taskItem)
+        public void Delete(TaskItem task)
         {
-            // Intentionally empty.
-        }
+            _tasks.Remove(task);
 
-        public void Delete(int id)
-        {
-            var taskToRemove = GetById(id);
-
-            if (taskToRemove != null)
-            {
-                _tasks.Remove(taskToRemove);
-            }
         }
     }
 }
