@@ -1,4 +1,5 @@
 using Scalar.AspNetCore;
+using TaskFlow.Api.Middleware;
 using TaskFlow.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +24,8 @@ if (app.Environment.IsDevelopment())
 
     app.MapScalarApiReference();
 }
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
 

@@ -75,12 +75,7 @@ namespace TaskFlow.Api.Controllers
         [HttpPatch("{id:int}")]
         public ActionResult UpdateTaskPartially(int id, PatchTaskRequest request)
         {
-            var result = _taskService.UpdateTaskPartially(id, request.Name, request.Description, request.Effort, request.State);
-
-            if (!result)
-            {
-                return NotFound();
-            }
+            _taskService.UpdateTaskPartially(id, request.Name, request.Description, request.Effort, request.State);
 
             return NoContent();
         }
@@ -88,22 +83,17 @@ namespace TaskFlow.Api.Controllers
         [HttpPut("{id:int}")]
         public ActionResult UpdateTask([Range(1, int.MaxValue)] int id, UpdateTaskRequest request)
         {
-            var result = _taskService.UpdateTask(id, request.Name, request.Description, request.Effort, request.State);
+            _taskService.UpdateTask(id, request.Name, request.Description, request.Effort, request.State);
 
-            if (!result)
-            {
-                return NotFound(); // 404
-            }
-
-            return NoContent(); // 204
+            return NoContent();
         }
 
-        [HttpPost("{id:int}")]
+        [HttpDelete("{id:int}")]
         public ActionResult DeleteTask(int id)
         {
-            var result = _taskService.DeleteTask(id);
+            _taskService.DeleteTask(id);
 
-            return result ? NoContent() : NotFound();
+            return NoContent();
         }
 
 

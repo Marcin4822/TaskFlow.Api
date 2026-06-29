@@ -1,4 +1,5 @@
-﻿using TaskFlow.Api.Models;
+﻿using TaskFlow.Api.Exceptions;
+using TaskFlow.Api.Models;
 
 namespace TaskFlow.Api.Services
 {
@@ -28,13 +29,13 @@ namespace TaskFlow.Api.Services
             return taskItem;
         }
 
-        public bool UpdateTaskPartially(int id, string? name, string? description, short? effort, TaskState? state)
+        public void UpdateTaskPartially(int id, string? name, string? description, short? effort, TaskState? state)
         {
             var task = _repository.GetById(id);
 
             if (task == null)
             {
-                return false;
+                throw new TaskNotFoundException(id);
             }
 
             // TODO: Improve PATCH handling to distinguish between omitted properties and explicit null values.
@@ -43,36 +44,30 @@ namespace TaskFlow.Api.Services
                 description ?? task.Description,
                 effort ?? task.Effort,
                 state ?? task.State);
-
-            return true;
         }
 
-        public bool UpdateTask(int id, string name, string? description, short? effort, TaskState state)
+        public void UpdateTask(int id, string name, string? description, short? effort, TaskState state)
         {
             var task = _repository.GetById(id);
 
             if (task == null)
             {
-                return false;
+                throw new TaskNotFoundException(id);
             }
 
             task.Update(name, description, effort, state);
-
-            return true;
         }
 
-        public bool DeleteTask(int id)
+        public void DeleteTask(int id)
         {
             var task = _repository.GetById(id);
 
             if (task == null)
             {
-                return false;
+                throw new TaskNotFoundException(id);
             }
 
             _repository.Delete(task);
-
-            return true;
         }
        
     }
