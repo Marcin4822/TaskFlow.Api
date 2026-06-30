@@ -11,7 +11,7 @@ builder.Services.AddScoped<TaskService>();
 
 builder.Services.AddDbContext<TaskDbContext>(options =>
 {
-    options.UseSqlServer();
+    options.UseSqlServer(builder.Configuration.GetConnectionString("TaskFlow"));
 });
 
 builder.Services.AddControllers();
