@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
+using TaskFlow.Api.Data;
 using TaskFlow.Api.Middleware;
 using TaskFlow.Api.Services;
 
@@ -6,6 +8,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSingleton<TaskRepository>();
 builder.Services.AddScoped<TaskService>();
+
+builder.Services.AddDbContext<TaskDbContext>(options =>
+{
+    options.UseSqlServer();
+});
 
 builder.Services.AddControllers();
 
