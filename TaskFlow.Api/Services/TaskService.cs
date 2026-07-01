@@ -11,14 +11,14 @@ namespace TaskFlow.Api.Services
             _repository = repository;
         }
 
-        public async Task<List<TaskItem>> GetTasksAsync()
+        public Task<List<TaskItem>> GetTasksAsync()
         {
-            return await _repository.GetAllAsync();
+            return _repository.GetAllAsync();
         }
 
-        public async Task<TaskItem?> GetTaskAsync(int id)
+        public Task<TaskItem?> GetTaskAsync(int id)
         {
-            return await _repository.GetByIdAsync(id);
+            return _repository.GetByIdAsync(id);
         }
 
         public async Task<TaskItem> CreateTaskAsync(string name, string? description)
@@ -45,7 +45,7 @@ namespace TaskFlow.Api.Services
                 effort ?? task.Effort,
                 state ?? task.State);
 
-            await _repository.UpdateAsync();
+            await _repository.SaveChangesAsync();
         }
 
         public async Task UpdateTaskAsync(int id, string name, string? description, short? effort, TaskState state)
@@ -58,7 +58,7 @@ namespace TaskFlow.Api.Services
             }
 
             task.Update(name, description, effort, state);
-            await _repository.UpdateAsync();
+            await _repository.SaveChangesAsync();
         }
 
         public async Task DeleteTaskAsync(int id)

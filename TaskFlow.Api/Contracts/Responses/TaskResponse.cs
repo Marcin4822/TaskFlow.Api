@@ -21,7 +21,7 @@ namespace TaskFlow.Api.Contracts.Responses
             Name = name;
             Description = description;
             Effort = effort;
-            State = State;
+            State = state;
         }
     }
 }

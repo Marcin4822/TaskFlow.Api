@@ -36,7 +36,7 @@ namespace TaskFlow.Api.Services
 
         }
 
-        public async Task UpdateAsync()
+        public async Task SaveChangesAsync()
         {
             await _dbContext.SaveChangesAsync();
         }
