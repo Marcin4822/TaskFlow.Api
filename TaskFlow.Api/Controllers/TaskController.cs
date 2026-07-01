@@ -18,9 +18,9 @@ namespace TaskFlow.Api.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<TaskResponse>> GetTasks()
+        public async Task<ActionResult<IEnumerable<TaskResponse>>> GetTasks()
         {
-            var tasks = _taskService.GetTasks();
+            var tasks = await _taskService.GetTasksAsync();
 
             var response = tasks.Select(task => new TaskResponse(
                 task.Id,
@@ -35,9 +35,9 @@ namespace TaskFlow.Api.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public ActionResult<TaskResponse> GetTask(int id)
+        public async Task<ActionResult<TaskResponse>> GetTaskAsync(int id)
         {
-            var task = _taskService.GetTask(id);
+            var task = await _taskService.GetTaskAsync(id);
 
             if (task == null)
             {
@@ -50,9 +50,9 @@ namespace TaskFlow.Api.Controllers
         }
 
         [HttpPost]
-        public ActionResult<TaskResponse> CreateTask(CreateTaskRequest request)
+        public async Task<ActionResult<TaskResponse>> CreateTask(CreateTaskRequest request)
         {
-            var task = _taskService.CreateTask(
+            var task = await _taskService.CreateTaskAsync(
                 request.Name, 
                 request.Description
              );
@@ -66,32 +66,32 @@ namespace TaskFlow.Api.Controllers
              );
 
             return CreatedAtAction(
-                nameof(GetTask),
+                nameof(GetTaskAsync),
                 new { id = response.Id },
                 response
             );
         }
 
         [HttpPatch("{id:int}")]
-        public ActionResult UpdateTaskPartially(int id, PatchTaskRequest request)
+        public async Task<ActionResult> UpdateTaskPartially(int id, PatchTaskRequest request)
         {
-            _taskService.UpdateTaskPartially(id, request.Name, request.Description, request.Effort, request.State);
+            await _taskService.UpdateTaskPartiallyAsync(id, request.Name, request.Description, request.Effort, request.State);
 
             return NoContent();
         }
 
         [HttpPut("{id:int}")]
-        public ActionResult UpdateTask([Range(1, int.MaxValue)] int id, UpdateTaskRequest request)
+        public async Task<ActionResult> UpdateTask([Range(1, int.MaxValue)] int id, UpdateTaskRequest request)
         {
-            _taskService.UpdateTask(id, request.Name, request.Description, request.Effort, request.State);
+            await _taskService.UpdateTaskAsync(id, request.Name, request.Description, request.Effort, request.State);
 
             return NoContent();
         }
 
         [HttpDelete("{id:int}")]
-        public ActionResult DeleteTask(int id)
+        public async Task<ActionResult> DeleteTask(int id)
         {
-            _taskService.DeleteTask(id);
+            await _taskService.DeleteTaskAsync(id);
 
             return NoContent();
         }
