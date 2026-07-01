@@ -11,27 +11,27 @@ namespace TaskFlow.Api.Services
             _repository = repository;
         }
 
-        public List<TaskItem> GetTasks()
+        public async Task<List<TaskItem>> GetTasksAsync()
         {
-            return _repository.GetAll();
+            return await _repository.GetAllAsync();
         }
 
-        public TaskItem? GetTask(int id)
+        public async Task<TaskItem?> GetTaskAsync(int id)
         {
-            return _repository.GetById(id);
+            return await _repository.GetByIdAsync(id);
         }
 
-        public TaskItem CreateTask(string name, string? description)
+        public async Task<TaskItem> CreateTaskAsync(string name, string? description)
         {
             var taskItem = new TaskItem(name, description);
-            _repository.Add(taskItem);
+            await _repository.AddAsync(taskItem);
 
             return taskItem;
         }
 
-        public void UpdateTaskPartially(int id, string? name, string? description, short? effort, TaskState? state)
+        public async Task UpdateTaskPartiallyAsync(int id, string? name, string? description, short? effort, TaskState? state)
         {
-            var task = _repository.GetById(id);
+            var task = await _repository.GetByIdAsync(id);
 
             if (task == null)
             {
@@ -44,11 +44,13 @@ namespace TaskFlow.Api.Services
                 description ?? task.Description,
                 effort ?? task.Effort,
                 state ?? task.State);
+
+            await _repository.UpdateAsync();
         }
 
-        public void UpdateTask(int id, string name, string? description, short? effort, TaskState state)
+        public async Task UpdateTaskAsync(int id, string name, string? description, short? effort, TaskState state)
         {
-            var task = _repository.GetById(id);
+            var task = await _repository.GetByIdAsync(id);
 
             if (task == null)
             {
@@ -56,18 +58,19 @@ namespace TaskFlow.Api.Services
             }
 
             task.Update(name, description, effort, state);
+            await _repository.UpdateAsync();
         }
 
-        public void DeleteTask(int id)
+        public async Task DeleteTaskAsync(int id)
         {
-            var task = _repository.GetById(id);
+            var task = await _repository.GetByIdAsync(id);
 
             if (task == null)
             {
                 throw new TaskNotFoundException(id);
             }
 
-            _repository.Delete(task);
+            await _repository.DeleteAsync(task);
         }
        
     }

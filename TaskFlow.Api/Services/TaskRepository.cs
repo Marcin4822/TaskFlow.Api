@@ -1,31 +1,44 @@
-﻿using TaskFlow.Api.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using TaskFlow.Api.Data;
+using TaskFlow.Api.Models;
 
 namespace TaskFlow.Api.Services
 {
     public class TaskRepository
     {
-        private readonly List<TaskItem> _tasks = [];
+        private readonly TaskDbContext _dbContext;
 
-        // IEnumerable or IReadOnlyList
-        public List<TaskItem> GetAll()
+        public TaskRepository(TaskDbContext context)
         {
-            return [.._tasks];
+            _dbContext = context;
         }
 
-        public TaskItem? GetById(int id)
+        public Task<List<TaskItem>> GetAllAsync()
         {
-            return _tasks.Find((task) => task.Id == id);
+            return _dbContext.Tasks.ToListAsync();
         }
 
-        public void Add(TaskItem task)
+        public async Task<TaskItem?> GetByIdAsync(int id)
         {
-            _tasks.Add(task);
+            return await _dbContext.Tasks.FindAsync(id);
         }
 
-        public void Delete(TaskItem task)
+        public async Task AddAsync(TaskItem task)
         {
-            _tasks.Remove(task);
+            _dbContext.Tasks.Add(task);
+            await _dbContext.SaveChangesAsync();
+        }
 
+        public async Task DeleteAsync(TaskItem task)
+        {
+            _dbContext.Tasks.Remove(task);
+            await _dbContext.SaveChangesAsync();
+
+        }
+
+        public async Task UpdateAsync()
+        {
+            await _dbContext.SaveChangesAsync();
         }
     }
 }
