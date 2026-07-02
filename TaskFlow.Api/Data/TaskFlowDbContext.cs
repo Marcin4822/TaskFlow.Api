@@ -3,9 +3,9 @@ using TaskFlow.Api.Models;
 
 namespace TaskFlow.Api.Data
 {
-    public class TaskDbContext : DbContext
+    public class TaskFlowDbContext : DbContext
     {
-        public TaskDbContext(DbContextOptions<TaskDbContext> options) : base(options)
+        public TaskFlowDbContext(DbContextOptions<TaskFlowDbContext> options) : base(options)
         {
 
         }

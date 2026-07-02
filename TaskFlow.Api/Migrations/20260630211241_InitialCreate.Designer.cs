@@ -10,7 +10,7 @@ using TaskFlow.Api.Data;
 
 namespace TaskFlow.Api.Migrations
 {
-    [DbContext(typeof(TaskDbContext))]
+    [DbContext(typeof(TaskFlowDbContext))]
     [Migration("20260630211241_InitialCreate")]
     partial class InitialCreate
     {

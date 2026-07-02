@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<TaskRepository>();
 builder.Services.AddScoped<TaskService>();
 
-builder.Services.AddDbContext<TaskDbContext>(options =>
+builder.Services.AddDbContext<TaskFlowDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("TaskFlow"));
 });

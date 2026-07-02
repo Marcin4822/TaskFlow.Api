@@ -6,9 +6,9 @@ namespace TaskFlow.Api.Services
 {
     public class TaskRepository
     {
-        private readonly TaskDbContext _dbContext;
+        private readonly TaskFlowDbContext _dbContext;
 
-        public TaskRepository(TaskDbContext context)
+        public TaskRepository(TaskFlowDbContext context)
         {
             _dbContext = context;
         }
